@@ -32,7 +32,7 @@ $ kubectl get pods -o=custom-columns=NAME:.metadata.name,IP:.status.podIP
 ```
 $ kubectl apply -f gateway-service.yaml
 
-$ kubectl get pods -o=custom-columns=NAME:.metadata.name,IP:.status.podIP
+$ kubectl get services -o=custom-columns=NAME:.metadata.name,IP:.spec.clusterIP
 (launch this command to know the ip (ip inside the cluster) adress of your service)
 ```
 
