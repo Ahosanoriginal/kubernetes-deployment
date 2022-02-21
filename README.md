@@ -2,6 +2,12 @@
 Simple Go microservices deployed on minikube
 
 
+## Build and launch docker image
+```
+$ docker build . -t {test/gateway} -f build/gateway_svc/Dockerfile
+$ docker run -p 8000:8000 -it test/gateway
+```
+
 ## Link docker repository and k8 (do it before deployment and build image docker just after launching this command):
 ```
 $ minikube docker-env
