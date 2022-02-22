@@ -21,7 +21,7 @@ var products = []Product{
 func main() {
 	r := mux.NewRouter()
 
-	r.HandleFunc("/api/v1/hello", getProducts).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/product", getProducts).Methods(http.MethodGet)
 
 	s := &http.Server{
 		Addr:    ":8001",
