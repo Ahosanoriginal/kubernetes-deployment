@@ -26,23 +26,43 @@ func main() {
 func sayHello(w http.ResponseWriter, r *http.Request) {
 
 	res := make(chan string)
-	go requestProduct(res)
+
+	go func() {
+		var data string
+		req, err := http.NewRequest("GET", "10.105.16.17/api/v1/product", nil)
+
+		// // add authorization header to the req
+		// req.Header.Add("Authorization", "Bearer "+t)
+
+		// Send req using http Client
+		client := &http.Client{}
+		resp, err := client.Do(req)
+		if err != nil {
+			log.Println("Error on response.\n[ERROR] -", err)
+		}
+		defer resp.Body.Close()
+
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Println("Error while reading the response bytes:", err)
+			return
+		}
+
+		err = json.Unmarshal(body, &data)
+		if err != nil {
+			log.Println("Error while unmarshalling ", err)
+			return
+		}
+
+		res <- data
+
+	}()
+
+	fmt.Println(res)
 	j, err := json.Marshal(res)
 	if err != nil {
 		fmt.Println(err)
 	}
 	w.Write(j)
-}
 
-func requestProduct(res chan string) {
-	resp, err := http.Get("10.101.209.249/api/v1/product")
-	if err != nil {
-		log.Fatalln(err)
-	}
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	sb := string(body)
-	res <- sb
 }
